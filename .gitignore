@@ -1,0 +1,24 @@
+# --- DỮ LIỆU THÔ (NẶNG) ---
+coffee/
+*.csv
+*.xlsx
+*.zip
+
+# Các file mô hình và scaler
+*.pth
+*.pkl
+*.png
+*.pbix
+
+# --- MÔI TRƯỜNG & CACHE PYTHON ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+.ipynb_checkpoints/
+
+# --- HỆ THỐNG ---
+.DS_Store
+Thumbs.db

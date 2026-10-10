@@ -1,0 +1,22 @@
+# --- 1. Thu thập dữ liệu (ETL & Crawling) ---
+requests>=2.31.0
+beautifulsoup4>=4.12.3
+lxml>=5.3.0
+
+# --- 2. Xử lý dữ liệu & Cơ sở dữ liệu (Data Engineering & PostgreSQL) ---
+pandas>=2.2.3
+numpy>=2.1.0
+psycopg2-binary>=2.9.10
+SQLAlchemy>=2.0.35
+
+# --- 3. Machine Learning & Deep Learning (AI Modeling) ---
+scikit-learn>=1.6.0
+xgboost>=2.1.0
+lightgbm>=4.5.0
+torch>=2.5.0
+
+# --- 4. Trực quan hóa & Web App Dashboard (BI / UI) ---
+matplotlib>=3.9.2
+seaborn>=0.13.2
+streamlit>=1.40.0
+plotly>=5.24.0
