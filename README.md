@@ -28,11 +28,18 @@ Tech Stack chi tiết:
 ```text
 D:\predict_coffee_price\
 │
-├── coffee_cnn_lstm_model.pth      # File trọng số (checkpoint) của mô hình CNN-LSTM đã huấn luyện
-├── predict_daily.py               # Script tự động hóa pipeline suy luận và ghi nhận DB hằng ngày
-├── Coffee_Price_Dashboard.pbix    # File báo cáo/Dashboard trực quan trên Power BI
-├── requirements.txt               # Danh sách thư viện Python phụ thuộc
-└── README.md                      # Tài liệu hướng dẫn sử dụng dự án
+├── crawl_coffee.ipynb             # Notebook thực hiện cào và thu thập dữ liệu giá cà phê tự động
+├── dashboard.pbix                 # Tệp báo cáo và giao diện trực quan hóa trên Power BI
+├── eda.ipynb                      # Notebook phân tích dữ liệu khám phá (Exploratory Data Analysis)
+├── evaluation.ipynb               # Notebook đánh giá chi tiết sai số và backtesting mô hình
+├── feature_engineering.ipynb      # Notebook xử lý, tạo lập và trích xuất các đặc trưng (198 features)
+├── post_training.ipynb            # Notebook phân tích sâu hậu huấn luyện và trực quan hóa residual
+├── predict_daily.py               # Script Python tự động hóa pipeline suy luận và ghi nhận cơ sở dữ liệu
+├── requirements.txt               # Danh sách các thư viện Python phụ thuộc của toàn dự án
+├── training.py                    # Script huấn luyện mô hình cơ sở
+├── training2.py                   # Script huấn luyện tối ưu hóa kiến trúc mạng
+├── training3.py                   # Script huấn luyện hoàn thiện tích hợp kiểm định
+└── README.md                      # Tài liệu hướng dẫn kỹ thuật và mô tả dự án toàn diện
 ```
 
 ## 4. CHI TIẾT CÁC MODULE VÀ THUẬT TOÁN
