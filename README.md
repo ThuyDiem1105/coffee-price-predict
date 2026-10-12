@@ -3,18 +3,18 @@
 
 ## 1. TỔNG QUAN ĐỀ TÀI & CƠ SỞ KHOA HỌC
 ### 1.1. Bối cảnh và Đặt vấn đề
-Ngành hàng cà phê tại khu vực **Tây Nguyên** nói chung và **Đắk Lắk** nói riêng thường xuyên đối mặt với điệp khúc *"được mùa mất giá"* hoặc biến động bất định về giá nguyên liệu. Nông dân và các hợp tác xã thường hoàn toàn bị động trước thông tin thị trường, thiếu các công cụ định lượng khoa học để trả lời cho câu hỏi cốt lõi: *"Khi nào nên bán ra?"* hay *"Khi nào nên tích trữ (trữ kho)?"*.
+Ngành hàng cà phê tại khu vực **Tây Nguyên** nói chung và **Đắk Lắk** nói riêng thường xuyên đối mặt với điệp khúc *"được mùa mất giá"* hoặc biến động bất định về giá nguyên liệu. Nông dân và các hợp tác xã thường hoàn toàn bị động trước thông tin thị trường, thiếu các công cụ định lượng khoa học để trả lời cho câu hỏi cốt lõi: *"Khi nào nên bán ra?"* hay *"Khi nào nên tích trữ (trữ kho)?"*.\
 Để giải quyết bài toán minh bạch hóa thông tin thị trường và hỗ trợ người dân thoát khỏi sự chèn ép của thương lái, hệ thống này được xây dựng như một giải pháp **End-to-End** toàn diện: từ khâu thu thập/lưu trữ dữ liệu tự động, xây dựng mô hình Học sâu (Deep Learning) dự báo giá, kiểm định hiệu quả kinh tế (Backtesting), cho đến việc trực quan hóa trên giao diện Business Intelligence (Power BI).   
 ### 1.2. Mục tiêu bài toán
 **Bài toán cốt lõi:** Dự báo chuỗi thời gian đa biến (Multivariate Time Series Forecasting) đối với giá cà phê Robusta tại Đắk Lắk trong khoảng thời gian **3 đến 7 ngày tới**.   
 **Giá trị mang lại:** Cung cấp thông tin dự báo xu hướng (Tăng/Giảm) chính xác, kết hợp các kịch bản khuyến nghị giao dịch nhằm tối ưu hóa lợi nhuận cho người trồng cà phê và các doanh nghiệp thu mua.
 
 ## 2. KIẾN TRÚC HỆ THỐNG & CÔNG NGHỆ SỬ DỤNG
-Hệ thống được thiết kế theo mô hình kiến trúc khép kín gồm 4 tầng chính:
-**1. Data Storage Layer:** Cơ sở dữ liệu quan hệ **PostgreSQL** (`coffee_db`) quản lý kho đặc trưng lịch sử (`coffee_master_feature_store`) và lưu trữ kết quả dự báo (`coffee_price_forecasts`).
-**2. Machine Learning / AI Pipeline:** Mô hình lai **CNN-LSTM** viết bằng **PyTorch**, kết hợp tiền xử lý dữ liệu với `Scikit-Learn` (`StandardScaler`).
-**3. Automation Layer:** Script Python tự động (`predict_daily.py`) thực hiện suy luận định kỳ và đồng bộ dữ liệu vào Database, kết hợp Task Scheduler / Cron Job.
-**4. Business Intelligence Layer:** Giao diện **Power BI Desktop** kết hợp hàm đo lường **DAX** nâng cao để trực quan hóa dữ liệu thời gian thực.
+Hệ thống được thiết kế theo mô hình kiến trúc khép kín gồm 4 tầng chính:\
+**1. Data Storage Layer:** Cơ sở dữ liệu quan hệ **PostgreSQL** (`coffee_db`) quản lý kho đặc trưng lịch sử (`coffee_master_feature_store`) và lưu trữ kết quả dự báo (`coffee_price_forecasts`).\
+**2. Machine Learning / AI Pipeline:** Mô hình lai **CNN-LSTM** viết bằng **PyTorch**, kết hợp tiền xử lý dữ liệu với `Scikit-Learn` (`StandardScaler`).\
+**3. Automation Layer:** Script Python tự động (`predict_daily.py`) thực hiện suy luận định kỳ và đồng bộ dữ liệu vào Database, kết hợp Task Scheduler / Cron Job.\
+**4. Business Intelligence Layer:** Giao diện **Power BI Desktop** kết hợp hàm đo lường **DAX** nâng cao để trực quan hóa dữ liệu thời gian thực.\
 
 Tech Stack chi tiết:
 * Ngôn ngữ lập trình: Python 3.14
@@ -49,11 +49,11 @@ Mô hình kết hợp ưu điểm của mạng tích chập (Convolutional Neura
 * **LSTM Layers:** Xử lý chuỗi thời gian đã qua tích chập với 2 tầng ẩn (`hidden_size = 64`, `dropout = 0.2`) nhằm nắm bắt các phụ thuộc dài hạn và xu hướng biến động giá theo chu kỳ.
 * **Fully Connected Layers (Sequential):**Ánh xạ không gian đặc trưng ẩn cuối cùng về giá trị dự báo đơn (1 chiều: giá cà phê Đắk Lắk tại thời điểm $t + \text{horizon}$).
 ### 4.2. Module Tự động hóa Pipeline (predict_daily.py)
-Quy trình thực thi tự động hằng ngày diễn ra theo các bước:
-**1. Kết nối & Truy vấn:** Kết nối an toàn đến cơ sở dữ liệu PostgreSQL, trích xuất toàn bộ bảng đặc trưng lịch sử (`coffee_master_feature_store`) sắp xếp theo thời gian (`"Date"`).
-**2. Xử lý & Cắt lát dữ liệu:** Kiểm tra và đảm bảo ma trận đặc trưng khớp chính xác **198 cột** chuẩn hóa qua `StandardScaler`. Lấy cửa sổ 14 ngày gần nhất làm đầu vào mô hình.
-**3. Suy luận (Inference):** Nạp trọng số từ file checkpoint `coffee_cnn_lstm_model.pth`, thực hiện tính toán trên thiết bị (CPU/GPU) để cho ra giá trị dự báo chuẩn hóa, sau đó nghịch đảo (`Inverse Transform`) về đơn vị tiền tệ gốc **(VND/kg)**.
-**5. Ghi nhận kết quả:** Tự động tạo mảng dữ liệu dự báo cho 7 ngày tiếp theo (`horizon = 7`) kèm theo mốc thời gian và nhãn mô hình, sau đó append trực tiếp vào bảng `coffee_price_forecasts` trên PostgreSQL.
+Quy trình thực thi tự động hằng ngày diễn ra theo các bước:\
+**1. Kết nối & Truy vấn:** Kết nối an toàn đến cơ sở dữ liệu PostgreSQL, trích xuất toàn bộ bảng đặc trưng lịch sử (`coffee_master_feature_store`) sắp xếp theo thời gian (`"Date"`).\
+**2. Xử lý & Cắt lát dữ liệu:** Kiểm tra và đảm bảo ma trận đặc trưng khớp chính xác **198 cột** chuẩn hóa qua `StandardScaler`. Lấy cửa sổ 14 ngày gần nhất làm đầu vào mô hình.\
+**3. Suy luận (Inference):** Nạp trọng số từ file checkpoint `coffee_cnn_lstm_model.pth`, thực hiện tính toán trên thiết bị (CPU/GPU) để cho ra giá trị dự báo chuẩn hóa, sau đó nghịch đảo (`Inverse Transform`) về đơn vị tiền tệ gốc **(VND/kg)**.\
+**4. Ghi nhận kết quả:** Tự động tạo mảng dữ liệu dự báo cho 7 ngày tiếp theo (`horizon = 7`) kèm theo mốc thời gian và nhãn mô hình, sau đó append trực tiếp vào bảng `coffee_price_forecasts` trên PostgreSQL.\
 
 ## 5. HƯỚNG DẪN CÀI ĐẶT VÀ VẬN HÀNH (GETTING STARTED)
 **Bước 1: Cài đặt môi trường Python và thư viện**
